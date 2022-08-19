@@ -11,4 +11,16 @@ Alright, so we're given a repository. Cloning it, we get these files:
 
 ![image](https://user-images.githubusercontent.com/104875856/185619589-a41a3f81-d303-4b48-b005-aaebb60e5eb3.png)
 
+Pretty quickly we should realise that these files look like a docker container, so we've likely got to connect to a remote server at some point to get the flag. We're given the server details in `README.md`.
+
+Anyway, the files we should be focused on are `challenge` and `challenge.c`. `Challenge` is the binary we want to exploit, `challenge.c` is it's C source code. 
+Running `file` on `challenge` we see we've got an unstripped binary with debug info.
+
+![image](https://user-images.githubusercontent.com/104875856/185620992-41056b2e-04ef-4f2e-b63a-884358cfa794.png)
+
+Quickly running the binary shows us its base functionality.
+
+![image](https://user-images.githubusercontent.com/104875856/185621404-0304bf3c-e1dc-4ed6-8da7-b4ff7ed55062.png)
+
+Cool, so the binary takes input and tells us if we've exploited it? Let's take a look at the source code.
 

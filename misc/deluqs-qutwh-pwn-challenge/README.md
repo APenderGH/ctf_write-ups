@@ -57,6 +57,7 @@ So our objective is clear, we want to execute the win() function and get to that
 
 Well, it's pretty simple actually, this function `gets()` takes our input and puts it into our buffer. But taking a closer look at the documentation for the `gets()` function,
 >gets() reads a line from stdin into the buffer pointed to by s until either a terminating newline or EOF, which it replaces with a null byte (aq\0aq). No check for buffer overrun is performed (see BUGS below). 
+
 Okayyyy, that's weird. So this `gets()` function takes input from stdin until it hits a newline and then just throws it all in our buffer. But we saw earlier in our source code that the size of our buffer is only 40 characters. Yeah, `gets()` doesn't care about this, we could put in 100 characters and its still gonna try squeeze it in there.
 
 So what happens when we do that?

@@ -69,3 +69,5 @@ Ooooo, a seg fault. A staple indication of a buffer overflow (when your buffer g
 A useful tool for looking into this sort of stuff is a debugger, `gdb` is my debugger of choice especially for ELF binaries. So, running the binary with `gdb` attached and using the same input we did before, we get this.
 
 ![image](https://user-images.githubusercontent.com/104875856/185719252-4af49605-8c4a-4f13-8855-8ecb98c5a8ac.png)
+
+Okay, it's about to get a bit technical. This output shows that values on the stack are being overwritten by our input. If you're not familiar with the stack at all there's plenty of resources explain how the stack works, for now I'll just be explaining how we can abuse this overflow.

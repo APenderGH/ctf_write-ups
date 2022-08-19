@@ -53,5 +53,8 @@ void main() {
 }
 ```
 
+So our objective is clear, we want to execute the win() function and get to that system() call. When looking for vulnerabilities, a good place to start is looking at what you control. In this case, we control what gets put into that char buffer, so lets look into how that happens.
 
+Well, it's pretty simple actually, this function `gets()` takes our input and puts it into our buffer. But taking a closer look at the documentation for the `gets()` function,
+>gets() reads a line from stdin into the buffer pointed to by s until either a terminating newline or EOF, which it replaces with a null byte (aq\0aq). No check for buffer overrun is performed (see BUGS below). 
 

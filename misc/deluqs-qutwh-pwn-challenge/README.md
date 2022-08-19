@@ -39,7 +39,7 @@ void win(int a, int b) {
 
 int vuln() {
     int b;
-    char buffer[40];
+    char buffer[40]; //Buffer size of 40 characters (it can only fit 40 characters of our input)
     b = 0;
     printf("Can you exploit this?\n");
     gets(&buffer); //Oh, what's this?! https://linux.die.net/man/3/gets

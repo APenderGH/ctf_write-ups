@@ -24,3 +24,5 @@ Quickly running the binary shows us its base functionality.
 
 Cool, so the binary takes input and tells us if we've exploited it? Let's take a look at the source code.
 
+![image](https://user-images.githubusercontent.com/104875856/185627083-600d260d-600b-42ac-9d01-7527c7bb2c8e.png)
+

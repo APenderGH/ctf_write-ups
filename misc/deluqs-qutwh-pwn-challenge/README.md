@@ -31,7 +31,7 @@ Cool, so the binary takes input and tells us if we've exploited it? Let's take a
 void win(int a, int b) {
     if (a == 0xdeadbeef && b == 0x1337c0de) {
         printf("Congratz! Cat the flag and sent it to @deluqs in the Discord\n");
-        system("/bin/sh");
+        system("/bin/sh"); //We want to run this, but win() is never called
         exit(0);
     }
     return;
@@ -42,7 +42,7 @@ int vuln() {
     char buffer[40];
     b = 0;
     printf("Can you exploit this?\n");
-    gets(&buffer);
+    gets(&buffer); //Oh, what's this?! https://linux.die.net/man/3/gets
     return b;
 }
 

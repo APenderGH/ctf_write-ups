@@ -57,4 +57,14 @@ So our objective is clear, we want to execute the win() function and get to that
 
 Well, it's pretty simple actually, this function `gets()` takes our input and puts it into our buffer. But taking a closer look at the documentation for the `gets()` function,
 >gets() reads a line from stdin into the buffer pointed to by s until either a terminating newline or EOF, which it replaces with a null byte (aq\0aq). No check for buffer overrun is performed (see BUGS below). 
+Okayyyy, that's weird. So this `gets()` function takes input from stdin until it hits a newline and then just throws it all in our buffer. But we saw earlier in our source code that the size of our buffer is only 40 characters. Yeah, `gets()` doesn't care about this, we could put in 100 characters and its still gonna try squeeze it in there.
 
+So what happens when we do that?
+
+![image](https://user-images.githubusercontent.com/104875856/185718518-a9e5d94e-ecfd-4645-ade3-aa4ad95eb3dc.png)
+
+Ooooo, a seg fault. A staple indication of a buffer overflow (when your buffer gets overflown!!!). Okay, so this pesky `gets()` function overflows our buffer, where does the rest of our input go then? And why do we get a seg fault?
+
+A useful tool for looking into this sort of stuff is a debugger, `gdb` is my debugger of choice especially for ELF binaries. So, running the binary with `gdb` attached and using the same input we did before, we get this.
+
+![image](https://user-images.githubusercontent.com/104875856/185719252-4af49605-8c4a-4f13-8855-8ecb98c5a8ac.png)

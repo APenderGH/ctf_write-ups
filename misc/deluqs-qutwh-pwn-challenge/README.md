@@ -24,7 +24,34 @@ Quickly running the binary shows us its base functionality.
 
 Cool, so the binary takes input and tells us if we've exploited it? Let's take a look at the source code.
 
-![image](https://user-images.githubusercontent.com/104875856/185715055-4a5fc9c6-4ba3-4f10-a16e-30591d40bcbb.png)
+```cs
+#include <stdio.h>
+#include <stdlib.h>
+
+void win(int a, int b) {
+    if (a == 0xdeadbeef && b == 0x1337c0de) {
+        printf("Congratz! Cat the flag and sent it to @deluqs in the Discord\n");
+        system("/bin/sh");
+        exit(0);
+    }
+    return;
+}
+
+int vuln() {
+    int b;
+    char buffer[40];
+    b = 0;
+    printf("Can you exploit this?\n");
+    gets(&buffer);
+    return b;
+}
+
+void main() {
+    vuln();
+    printf("You did not exploit it.\n");
+    return;
+}
+```
 
 
 

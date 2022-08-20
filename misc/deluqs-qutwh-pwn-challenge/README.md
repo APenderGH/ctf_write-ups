@@ -171,3 +171,5 @@ cyclic_find('kaaa')
 cyclic_find('oaaa')
 # outputs 56
 ```
+So now we know our input will need some 40 characters, then the address for "/bin/sh", then another 12 characters (the string address will be 4 bytes long, so 44 + 12 = 56), then the address to the instruction we want to execute.
+

@@ -70,9 +70,9 @@ A useful tool for looking into this sort of stuff is a debugger, `gdb` is my deb
 
 ![image](https://user-images.githubusercontent.com/104875856/185719252-4af49605-8c4a-4f13-8855-8ecb98c5a8ac.png)
 
-Okay, it's about to get a bit technical. This output shows that values on the stack are being overwritten by our input. If you're not familiar with the stack at all there's plenty of resources explain how the stack works, for now I'll just be explaining how we can abuse this overflow.
+Okay, it's about to get a bit technical. This output shows that values on the stack are being overwritten by our input. If you're not familiar with the stack at all there's plenty of resources that explain how the stack works, for now I'll just be explaining how we can abuse this overflow.
 
-Now, this explain why we get our segfault, we're overwriting the value in the EIP register. The EIP register is supposed to point to the next instruction we want to execute, instead its pointing to `0x41414141` (`0x41` == 'A'). But this is good, this means we can control where our program goes if we put a valid address in EIP.
+Anyway, this explains why we get our segfault, we're overwriting the value in the EIP register. The EIP register is supposed to point to the next instruction we want to execute, instead its pointing to `0x41414141` (`0x41` == 'A') so it jumps to `0x41414141` and finds random stuff, then it crashes. But this is good, this means we can control where our program goes if we put a valid address in EIP.
 
 We wanna get to the `system()` call inside the `win()` function, so lets find the address for that instruction. We can do this in `gdb` by disassembling the `win()` function, showing all the addresses and offsets for the assembly instructions.
 

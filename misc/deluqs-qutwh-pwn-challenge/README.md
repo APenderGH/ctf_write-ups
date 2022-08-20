@@ -97,7 +97,7 @@ Dump of assembler code for function win:
    0x080491cc <+54>:    sub    esp,0xc
    0x080491cf <+57>:    lea    eax,[ebx-0x1faf]
    0x080491d5 <+63>:    push   eax
-   0x080491d6 <+64>:    call   0x8049050 <system@plt>
+   0x080491d6 <+64>:    call   0x8049050 <system@plt>    <---- Here's that system call
    0x080491db <+69>:    add    esp,0x10
    0x080491de <+72>:    sub    esp,0xc
    0x080491e1 <+75>:    push   0x0

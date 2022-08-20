@@ -76,7 +76,7 @@ Now, this explain why we get our segfault, we're overwriting the value in the EI
 
 We wanna get to the `system()` call inside the `win()` function, so lets find the address for that instruction. We can do this in `gdb` by disassembling the `win()` function, showing all the addresses and offsets for the assembly instructions.
 
-```asm
+```
 pwndbg> disassemble win
 Dump of assembler code for function win:
    0x08049196 <+0>:     push   ebp
@@ -122,7 +122,7 @@ void win(int a, int b) {
 }
 ```
 Now lets look at the assembly,
-```asm
+```
 0x080491e1 <+75>:    push   0x0   <--- This pushes the parameter, 0, onto the stack
 0x080491e3 <+77>:    call   0x8049060 <exit@plt>  <--- This calls the exit function, it grabs its parameters off of the stack
 ```
@@ -138,7 +138,7 @@ void win(int a, int b) {
 }
 ```
 The assembly...
-```asm
+```
 0x080491d5 <+63>:    push   eax  <--- Pushes its parameter onto the stack (in this case its parameter is stored in EAX)
 0x080491d6 <+64>:    call   0x8049050 <system@plt> <--- Calls the system function, grabs its parameter off the stack
 ```

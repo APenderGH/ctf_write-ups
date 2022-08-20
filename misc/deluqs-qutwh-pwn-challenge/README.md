@@ -150,5 +150,24 @@ Okay, so know our input needs to do the following:
 - Continue to overflow the buffer until we reach EIP
 - Overwrite EIP with the address to the assembly instruction just before the `system()` call
 
+But how do we know when in our input we should have the addresses? We can figure this out with `cyclic`. `cyclic` Produces a string that doesn't repeat itself for more than 3 letters, perfect for our use case. We'll use a cyclic string as our input and we'll be able to see which part of that string ended up in EAX and EIP. I'll show you what that looks like:
 
+*creating the cyclic string*
+```
+root@DESKTOP-A32C6RP:/mnt/c/Users/ssamu/Downloads/qutwh-pwn-challenge-main# cyclic 100
+aaaabaaacaaadaaaeaaafaaagaaahaaaiaaajaaakaaalaaamaaanaaaoaaapaaaqaaaraaasaaataaauaaavaaawaaaxaaayaaa
+```
+*running the binary in gdb with the cyclic string*
 
+![image](https://user-images.githubusercontent.com/104875856/185726890-3de53bcf-8234-4c99-9777-a8339963623e.png)
+
+We see that the strings in EAX and EIP are 'kaaa' and 'oaaa' respectively.
+
+Using pwntools we can find where in the cyclic string those substrings are.
+```py
+from pwn import *
+cyclic_find('kaaa')
+# outputs 40
+cyclic_find('oaaa')
+# outputs 56
+```

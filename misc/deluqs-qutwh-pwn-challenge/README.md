@@ -226,4 +226,6 @@ Running this...
 
 ![image](https://user-images.githubusercontent.com/104875856/185727922-9bac3e74-0fdf-4263-8737-d8b14e7f8527.png)
 
-Wooooo! We got the flag!
+Wooooo! We got the flag! Buffer overflows are very common to see in CTF's, but they are often limited to JUST overwriting the instruction pointer (EIP) to skip over a line or two of code. This binary exploitation challenge from Deluqs does a very good job of introducing how function parameters behave on the stack, and the stack in general!
+
+Anyway, hopefully this writeup was helpful. If you have any questions DM me at APender#4176 on Discord.

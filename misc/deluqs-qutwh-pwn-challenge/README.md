@@ -116,7 +116,7 @@ void win(int a, int b) {
     if (a == 0xdeadbeef && b == 0x1337c0de) {
         printf("Congratz! Cat the flag and sent it to @deluqs in the Discord\n");
         system("/bin/sh");
-        exit(0);  <--- This is the function we're looking at, it takes a parameter of 0 in the source code.
+        exit(0);  //<--- This is the function we're looking at, it takes a parameter of 0 in the source code.
     }
     return;
 }
@@ -131,7 +131,7 @@ So, if we're looking at the `system()` call,
 void win(int a, int b) {
     if (a == 0xdeadbeef && b == 0x1337c0de) {
         printf("Congratz! Cat the flag and sent it to @deluqs in the Discord\n");
-        system("/bin/sh"); <--- This is the function we're looking at, it takes a parameter of "/bin/sh"
+        system("/bin/sh"); //<--- This is the function we're looking at, it takes a parameter of "/bin/sh"
         exit(0);
     }
     return;

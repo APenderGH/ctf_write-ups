@@ -142,6 +142,8 @@ The assembly...
 0x080491d5 <+63>:    push   eax  <--- Pushes its parameter onto the stack (in this case its parameter is stored in EAX)
 0x080491d6 <+64>:    call   0x8049050 <system@plt> <--- Calls the system function, grabs its parameter off the stack
 ```
-So this means we cant just jump straight to `0x080491d6` because the `system()` function won't have a parameter to use. 
+So this means we cant just jump straight to `0x080491d6` because the `system()` function won't have a parameter to use. One way we can solve this is by also overwriting EAX with a pointer to the string "/bin/sh", then, instead of jumping to `0x080491d6` we jump to `0x080491d5` so that our value in EAX gets pushed to the stack before `system()` is called. 
+
+
 
 

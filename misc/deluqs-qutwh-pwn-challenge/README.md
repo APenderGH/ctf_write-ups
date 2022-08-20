@@ -24,7 +24,7 @@ Quickly running the binary shows us its base functionality.
 
 Cool, so the binary takes input and tells us if we've exploited it? Let's take a look at the source code.
 
-```cs
+```c
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -76,7 +76,7 @@ Now, this explain why we get our segfault, we're overwriting the value in the EI
 
 We wanna get to the `system()` call inside the `win()` function, so lets find the address for that instruction. We can do this in `gdb` by disassembling the `win()` function, showing all the addresses and offsets for the assembly instructions.
 
-```
+```asm
 pwndbg> disassemble win
 Dump of assembler code for function win:
    0x08049196 <+0>:     push   ebp
@@ -111,7 +111,7 @@ pwndbg>
 ```
 So we know the address of the `system()` call (`0x080491d6`). So if we can control EIP, why don't we just jump straight there? Well when a function gets called in assembly it first has to push its parameters onto the stack. We can see this behaviour here.
 
-```
+```c
 void win(int a, int b) {
     if (a == 0xdeadbeef && b == 0x1337c0de) {
         printf("Congratz! Cat the flag and sent it to @deluqs in the Discord\n");
@@ -122,12 +122,12 @@ void win(int a, int b) {
 }
 ```
 Now lets look at the assembly,
-```
+```asm
 0x080491e1 <+75>:    push   0x0   <--- This pushes the parameter, 0, onto the stack
 0x080491e3 <+77>:    call   0x8049060 <exit@plt>  <--- This calls the exit function, it grabs its parameters off of the stack
 ```
 So, if we're looking at the `system()` call,
-```
+```c
 void win(int a, int b) {
     if (a == 0xdeadbeef && b == 0x1337c0de) {
         printf("Congratz! Cat the flag and sent it to @deluqs in the Discord\n");
@@ -138,7 +138,7 @@ void win(int a, int b) {
 }
 ```
 The assembly...
-```
+```asm
 0x080491d5 <+63>:    push   eax  <--- Pushes its parameter onto the stack (in this case its parameter is stored in EAX)
 0x080491d6 <+64>:    call   0x8049050 <system@plt> <--- Calls the system function, grabs its parameter off the stack
 ```

@@ -144,6 +144,11 @@ The assembly...
 ```
 So this means we cant just jump straight to `0x080491d6` because the `system()` function won't have a parameter to use. One way we can solve this is by also overwriting EAX with a pointer to the string "/bin/sh", then, instead of jumping to `0x080491d6` we jump to `0x080491d5` so that our value in EAX gets pushed to the stack before `system()` is called. 
 
+Okay, so know our input needs to do the following:
+- overflow the buffer until we reach the EAX register
+- overwrite the EAX register with a pointer to "/bin/sh"
+- continue to overflow the buffer until we reach EIP
+- overwrite EIP with the address to the assembly instruction just before the `system()` call
 
 
 

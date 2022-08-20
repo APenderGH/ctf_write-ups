@@ -109,3 +109,39 @@ Dump of assembler code for function win:
 End of assembler dump.
 pwndbg>
 ```
+So we know the address of the `system()` call (`0x080491d6`). So if we can control EIP, why don't we just jump straight there? Well when a function gets called in assembly it first has to push its parameters onto the stack. We can see this behaviour here.
+
+```
+void win(int a, int b) {
+    if (a == 0xdeadbeef && b == 0x1337c0de) {
+        printf("Congratz! Cat the flag and sent it to @deluqs in the Discord\n");
+        system("/bin/sh");
+        exit(0);  <--- This is the function we're looking at, it takes a parameter of 0 in the source code.
+    }
+    return;
+}
+```
+Now lets look at the assembly,
+```
+0x080491e1 <+75>:    push   0x0   <--- This pushes the parameter, 0, onto the stack
+0x080491e3 <+77>:    call   0x8049060 <exit@plt>  <--- This calls the exit function, it grabs its parameters off of the stack
+```
+So, if we're looking at the `system()` call,
+```
+void win(int a, int b) {
+    if (a == 0xdeadbeef && b == 0x1337c0de) {
+        printf("Congratz! Cat the flag and sent it to @deluqs in the Discord\n");
+        system("/bin/sh"); <--- This is the function we're looking at, it takes a parameter of "/bin/sh"
+        exit(0);
+    }
+    return;
+}
+```
+The assembly...
+```
+0x080491d5 <+63>:    push   eax  <--- Pushes its parameter onto the stack (in this case its parameter is stored in EAX)
+0x080491d6 <+64>:    call   0x8049050 <system@plt> <--- Calls the system function, grabs its parameter off the stack
+```
+So this means we cant just jump straight to `0x080491d6` because the `system()` function won't have a parameter to use. 
+
+

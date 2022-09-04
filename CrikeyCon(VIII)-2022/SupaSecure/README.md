@@ -101,7 +101,7 @@ ADMIN JWT:
 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiYWRtaW4ifQ.xLtLdUxXsGB7EqP49a8xQziqpjkVKeJ9o2nix4xLf5M
 ```
 
-Okayy, so we know we generate and change a JWT token...but where do we actually use it? I was stumped here for a good 30 minutes, I tried providing the `Admin JWT` through several common headers through which they're normally obtained, like `X-Auth-Token` and `Authorization`, but reloading each page with that header set yielded no difference in response.
+Okayy, so we know we can generate and change a JWT token...but where do we actually use it? I was stumped here for a good 30 minutes, I tried providing the `Admin JWT` through several common headers, like `X-Auth-Token` and `Authorization`, but reloading each page with that header set yielded no difference in response.
 
 Hmm, I must've missed something.
 
@@ -162,7 +162,7 @@ Here's the response we get.
 
 ![image](https://user-images.githubusercontent.com/104875856/188303262-30a50f10-a40b-4611-b324-beacd6b941ce.png)
 
-Ah, the solutions clear now. All we have to do is go back to our debugger, change the `guest` field of our `JWT` token to `droppy` and send a `POST` request using that token. Our token is now, `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiZHJvcHB5In0.VowEtTnbDRUIcQr04fIsK8NnMyxMB5abfhviSyYjELY`.
+Ah, the solution's clear now. All we have to do is go back to our debugger, change the `guest` field of our `JWT` token to `droppy` and send a `POST` request using that token. Our token is now, `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiZHJvcHB5In0.VowEtTnbDRUIcQr04fIsK8NnMyxMB5abfhviSyYjELY`.
 
 Sending that request through...
 

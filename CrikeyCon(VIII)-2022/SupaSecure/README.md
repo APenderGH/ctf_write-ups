@@ -92,6 +92,85 @@ There's a great tool at <a href="https://jwt.io/">https://jwt.io/</a> which lets
 
 ![image](https://user-images.githubusercontent.com/104875856/188300310-f0091036-c4eb-463e-9c9e-bc2d71987f3f.png)
 
+Okay cool, so on the right hand side you can see what that `JWT` token is saying about us. It says we're a `user` with the status `guest`. The first thing I thought to do was just to change that `guest` parameter to `admin`. Just changing that in the debugger gives us a new token holding that information that we gave it,
+
+```
+GUEST JWT:
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiZ3Vlc3QifQ._4hr9x7RK_8dsAxQDwg-OJkoHgfvYu6-D5KRgv9uTH0
+ADMIN JWT:
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiYWRtaW4ifQ.xLtLdUxXsGB7EqP49a8xQziqpjkVKeJ9o2nix4xLf5M
+```
+
+Okayy, so we know we generate and change a JWT token...but where do we actually use it? I was stumped here for a good 30 minutes, I tried providing the `Admin JWT` through several common headers through which they're normally obtained, like `X-Auth-Token` and `Authorization`, but reloading each page with that header set yielded no difference in response.
+
+Hmm, I must've missed something.
+
+## Enumerate dummy! Enumberate dummy/robots.txt!
+
+**Always. Check. Robots.txt.**
+
+I usually check it every single time I do a web challenge but for some reason I just didn't this time, and this is a common problem you'll face in web challenges. Just missing a small thing that you're so used to doing that you don't even think about can cost you hours.
+
+If you've never heard of the /robots.txt file, well, welcome to CTF's. The robots.txt file is a file that defines what 'bots' can and can't access on your website.
+This is what a robots.txt file might look like,
+```
+User-agent: *
+Disallow: /cgi-bin/
+Disallow: /tmp/
+Disallow: /junk/
+```
+This says that 'robots' or 'bots' aren't allowed to enter the subdirectories `/cgi-bin/`, `/tmp/` or `/junk/`
+
+Anyway, this file is VERY popular in beginner CTF's as a place to hide information, subdirectories or even flags sometimes. So it should be common practice to always check robots.txt when you come across a web challenge.
+
+Looking inside this...
+
+![image](https://user-images.githubusercontent.com/104875856/188303089-52df38b3-0f3a-4753-b758-b127810f355c.png)
+
+AHHH, it was right there all along! There's a `/supasecure` subdirectory!
+
+If you do a `GET` request to this directory you get the `Nothing to GET here` response, so we do a `POST` request with burpsuite.
+
+![image](https://user-images.githubusercontent.com/104875856/188303151-d93edbbe-2fc9-460b-955a-32a0f6392ef4.png)
+
+That's it! Here's where we use out JWT token, it want's us to pass it in as `JSON` so we do exactly like we did with the user and password. I'll do a `POST` request with our original token (the one that says we're `guest`), just to see the response. That request looks like this,
+```
+POST /supasecure HTTP/2
+Host: supasecure.crikeyconctf.com
+Cache-Control: max-age=0
+Sec-Ch-Ua: " Not A;Brand";v="99", "Chromium";v="104"
+Sec-Ch-Ua-Mobile: ?0
+Sec-Ch-Ua-Platform: "Windows"
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.5112.102 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+Sec-Fetch-Site: none
+Sec-Fetch-Mode: navigate
+Sec-Fetch-User: ?1
+Sec-Fetch-Dest: document
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.9
+Content-Type: application/json
+Content-Length: 115
+
+{
+  "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiZ3Vlc3QifQ._4hr9x7RK_8dsAxQDwg-OJkoHgfvYu6-D5KRgv9uTH0"
+}
+```
+
+Here's the response we get.
+
+![image](https://user-images.githubusercontent.com/104875856/188303262-30a50f10-a40b-4611-b324-beacd6b941ce.png)
+
+Ah, the solutions clear now. All we have to do is go back to our debugger, change the `guest` field of our `JWT` token to `droppy` and send a `POST` request using that token. Our token is now, `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiZHJvcHB5In0.VowEtTnbDRUIcQr04fIsK8NnMyxMB5abfhviSyYjELY`.
+
+Sending that request through...
+
+![image](https://user-images.githubusercontent.com/104875856/188303351-72155d62-74b7-43ed-a5d4-8375b8c07ce3.png)
+
+BAM there's the flag!
+
+**flag{maybe_not_so_supasecure}**
 
 
 

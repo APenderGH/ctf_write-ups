@@ -105,7 +105,7 @@ Okayy, so we know we generate and change a JWT token...but where do we actually 
 
 Hmm, I must've missed something.
 
-## Enumerate dummy! Enumberate dummy/robots.txt!
+## Enumerate dummy! Enumerate dummy/robots.txt!
 
 **Always. Check. Robots.txt.**
 

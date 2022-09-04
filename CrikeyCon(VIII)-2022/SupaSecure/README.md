@@ -44,13 +44,13 @@ Awesome, now we can just send this payload and observe the response.
 
 ![image](https://user-images.githubusercontent.com/104875856/188298988-c7bd3799-ed75-4cd2-9b07-cab0883e6e5c.png)
 
-Oooo, that's interesting. Looks like the page expected some data coming with the `POST` request. Now, it's important to notice here that the page was expecting `JSON` data. To send `JSON` data in your requests you need to specify that that's the kind of data that you're sending, so the server that's receiving it knows how to interpret it. To do that we use a Header called `Content-Type:`, and you can see in our earlier requests that that header is set to `application/x-www-form-urlencoded`. This is simply telling the server that we're sending url encoded information.
+Oooo, that's interesting. Looks like the page expected some data coming with the `POST` request. Now, it's important to notice here that the page was expecting `JSON` data. To send `JSON` data in your requests you need to specify that that's the kind of data that you're sending, so the server that's receiving it knows how to interpret it. To do that we use a Header called `Content-Type`, and you can see in our earlier requests that that header is set to `application/x-www-form-urlencoded`. This is simply telling the server that we're sending url encoded information.
 
 Now, to send `JSON` data, all we need to do is change that Header to `application/json`. *The author even hints at this a little*
 
 ![image](https://user-images.githubusercontent.com/104875856/188299333-9a864c02-13f3-4502-bd5d-cf60381b145b.png)
 
-If you're interested you can look at all the different values for the `Content-Type:` header <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types">HERE</a>. But just changing that doesn't fix our problem, the server said it was expecting something like `{"user":"user","pass":"user"}` so let's give it that. Editing our request to include that `JSON` looks like this,
+If you're interested you can look at all the different values for the `Content-Type` header <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types">HERE</a>. But just changing that doesn't fix our problem, the server said it was expecting something like `{"user":"user","pass":"user"}` so let's give it that. Editing our request to include that `JSON` looks like this,
 
 ```
 POST /login HTTP/2

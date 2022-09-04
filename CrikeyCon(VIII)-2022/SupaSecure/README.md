@@ -21,7 +21,7 @@ If burpsuite is completely new to you then you should definitely learn how to us
 Like I said earlier, we want to make a `POST` request instead of a `GET` request. Once we're in the repeater this becomes very easy to do, just right-click on the request you imported and press `change request method` and boom, burpsuite automagically changes your request method.
 
 ![image](https://user-images.githubusercontent.com/104875856/188298958-9c052209-f00e-4f64-a208-35a50449310b.png)
-![image](https://user-images.githubusercontent.com/104875856/188299447-06884b42-1dda-409c-b0ab-ee256c41f7a0.png)
+![image](https://user-images.githubusercontent.com/104875856/188299484-338ab090-aa54-4257-81bf-01fafa05daf4.png)
 
 Awesome, now we can just send this payload and observe the response.
 

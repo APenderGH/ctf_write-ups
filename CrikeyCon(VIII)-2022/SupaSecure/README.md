@@ -12,6 +12,9 @@ We get this very modern looking web-page. I'm eager to get logged in so let's ch
 ![image](https://user-images.githubusercontent.com/104875856/188298672-d94157ad-75ea-46a4-96b3-04c610c0102e.png)
 
 Hmm, nothing to `GET` here, then let's try make a `POST` request to this page instead. Burpsuite makes this kind of thing really easy to do.
+
+### Mmm, burpsuite is bery buseful I bromise
+
 Using burpsuite we can intercept the request made when we try to go to the webpage `https://supasecure.crikeyconctf.com/login`. Here's that intercepted request.
 
 ![image](https://user-images.githubusercontent.com/104875856/188298811-5cf6e9a7-284f-4f8e-b2eb-bacca785bc54.png)

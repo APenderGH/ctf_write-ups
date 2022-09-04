@@ -80,4 +80,19 @@ Content-Length: 42
 }
 ```
 
+![image](https://user-images.githubusercontent.com/104875856/188299761-3221e738-e6db-49fa-96b1-548db0fe00ee.png)
+
+UH OH... I know what this is, do you?
+
+## JWT (JSON Web Tokens)
+
+Yeah, this is where experience comes in. Just like you might immediately recognise the base64 in that response, I immediately recognise a JWT token. The big give away is both the base64 and the '.'s separating parts of the token, typically it will look something like `xxxxx.yyyyy.zzzzz`.
+
+There's a great tool at <a href="https://jwt.io/">https://jwt.io/</a> which lets you debug these tokens. Let's take a look at the token we got in that debugger,
+
+![image](https://user-images.githubusercontent.com/104875856/188300310-f0091036-c4eb-463e-9c9e-bc2d71987f3f.png)
+
+
+
+
 

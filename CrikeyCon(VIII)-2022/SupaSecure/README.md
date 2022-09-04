@@ -13,7 +13,7 @@ We get this very modern looking web-page. I'm eager to get logged in so let's ch
 
 Hmm, nothing to `GET` here, then let's try make a `POST` request to this page instead. Burpsuite makes this kind of thing really easy to do.
 
-### Mmm, burpsuite is bery buseful I bromise
+### Burpsuite is bery buseful I bromise
 
 Using burpsuite we can intercept the request made when we try to go to the webpage `https://supasecure.crikeyconctf.com/login`. Here's that intercepted request.
 

@@ -21,11 +21,11 @@ If burpsuite is completely new to you then you should definitely learn how to us
 Like I said earlier, we want to make a `POST` request instead of a `GET` request. Once we're in the repeater this becomes very easy to do, just right-click on the request you imported and press `change request method` and boom, burpsuite automagically changes your request method.
 
 ![image](https://user-images.githubusercontent.com/104875856/188298958-9c052209-f00e-4f64-a208-35a50449310b.png)
+![image](https://user-images.githubusercontent.com/104875856/188299447-06884b42-1dda-409c-b0ab-ee256c41f7a0.png)
 
 Awesome, now we can just send this payload and observe the response.
 
 ![image](https://user-images.githubusercontent.com/104875856/188298988-c7bd3799-ed75-4cd2-9b07-cab0883e6e5c.png)
-![image](https://user-images.githubusercontent.com/104875856/188299447-06884b42-1dda-409c-b0ab-ee256c41f7a0.png)
 
 Oooo, that's interesting. Looks like the page expected some data coming with the `POST` request. Now, it's important to notice here that the page was expecting `JSON` data. To send `JSON` data in your requests you need to specify that that's the kind of data that you're sending, so the server that's receiving it knows how to interpret it. To do that we use a Header called `Content-Type:`, and you can see in our earlier requests that that header is set to `application/x-www-form-urlencoded`. This is simply telling the server that we're sending url encoded information.
 

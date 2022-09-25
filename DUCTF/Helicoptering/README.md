@@ -13,4 +13,21 @@ War-machine             |  HTTP server
 :-------------------------:|:-------------------------:
 | ![image](https://user-images.githubusercontent.com/104875856/192170186-4bce1d3b-7500-4260-8e30-06793216624a.png) |  ![image](https://user-images.githubusercontent.com/104875856/192170208-6c87c791-29cb-4f0e-9306-506cd57c4b10.png) |
 
+As much as I'd love to imagine our server is being run on an Apache attack helicopter, it seems more likely that this server is running the Apache HTTP service. 
 
+Now, the webpage tells us we need to access two directories
+
+(1) http://34.87.217.252:30026/one/flag.txt
+(2) http://34.87.217.252:30026/two/flag.txt
+
+The webpage also gives us the content of the .htaccess files for both directories. If you're not familiar, a quick google search for .htaccess files will tell you its contents is used in apache to create custom configurations for specific directories.
+
+So lets start with the first one
+
+```
+**one/.htaccess**
+
+RewriteEngine On
+RewriteCond %{HTTP_HOST} !^localhost$
+RewriteRule ".*" "-" [F]
+```

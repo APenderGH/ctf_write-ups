@@ -9,5 +9,9 @@ Alright, so going to the link they give us we get this webpage.
 
 Okay, so first thing I notice is all these helicopter references. Apache is a common web server software but it's also a type of attack helicopter. Sooooo, which one could it be? Here, take your pick:
 
-| ![image](https://user-images.githubusercontent.com/104875856/192170186-4bce1d3b-7500-4260-8e30-06793216624a.png) | ![image](https://user-images.githubusercontent.com/104875856/192170208-6c87c791-29cb-4f0e-9306-506cd57c4b10.png) |
+Solarized dark             |  Solarized Ocean
+:-------------------------:|:-------------------------:
+| ![image](https://user-images.githubusercontent.com/104875856/192170186-4bce1d3b-7500-4260-8e30-06793216624a.png) |  ![image](https://user-images.githubusercontent.com/104875856/192170208-6c87c791-29cb-4f0e-9306-506cd57c4b10.png) |
+
+|  |  |
 

@@ -37,7 +37,9 @@ Without knowing any of this syntax there's a few things I recognise. We've got a
 ![image](https://user-images.githubusercontent.com/104875856/192171027-90c263b8-0050-46e8-beeb-59b20f051ceb.png)
 
 If that looks like a lot of random words, don't worry. We only need to focus on that very first sentence.
-`The HTTP_HOST server variable contains the value of the Host HTTP request header`
+
+`The HTTP_HOST server variable contains the value of the Host HTTP request header`.
+
 So when we send a request to a website our request looks something like this,
 
 ![image](https://user-images.githubusercontent.com/104875856/192171109-d738db53-a5da-4b90-8be7-c26d37b8051d.png)

@@ -3,6 +3,7 @@
 </p>
 <h1 align="center" style="margin-top: 0px;">Helicoptering</h1>
 
+
 Alright, so going to the link they give us we get this webpage.
 
 ![image](https://user-images.githubusercontent.com/104875856/192170071-8f6d9507-d92c-4f4e-980a-c570191e9dc5.png)
@@ -18,6 +19,7 @@ As much as I'd love to imagine our server is being run on an Apache attack helic
 Now, the webpage tells us we need to access two directories
 
 (1) http://34.87.217.252:30026/one/flag.txt
+
 (2) http://34.87.217.252:30026/two/flag.txt
 
 The webpage also gives us the content of the .htaccess files for both directories. If you're not familiar, a quick google search for .htaccess files will tell you its contents is used in apache to create custom configurations for specific directories.

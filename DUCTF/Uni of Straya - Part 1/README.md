@@ -105,7 +105,7 @@ NO WAY
 
 ![image](https://user-images.githubusercontent.com/104875856/192215883-ad5f5900-69e7-4b26-be1a-5fef57785e68.png)
 
-
+So we have SSRF, but it's kinda limited right? We don't get any real feedback on what the serv
 
 
 

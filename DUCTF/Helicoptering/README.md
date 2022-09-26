@@ -57,6 +57,41 @@ Sending it through and we get the first flag
 
 ![image](https://user-images.githubusercontent.com/104875856/192171456-66b2ed1c-65c8-4356-a8c3-0edbda0d16a2.png)
 
+Awesome! Now let's take a look at the next one,
+
+```
+two/.htaccess
+
+RewriteEngine On
+RewriteCond %{THE_REQUEST} flag
+RewriteRule ".*" "-" [F]
+```
+
+Alright, assuming the condition is in the same format as the last one then the condition is, `RewriteCond variable regex`. Where the regex should not match the variable.
+In this case the variable `%{THE_REQUEST}` refers to the request itself, so our request can't have flag in it at all.
+
+So, a common way of bypassing filters like this is by using URL encoding. URL encoding is how URL's handle special characters, it helps with preventing special characters from causing problems. But URL encoding can be used on normal characters as well, and when the URL tries to resolve it will decode the URL encoding and search for the result.
+
+So, in this case we can URL encode the string `flag.txt`. The URL encoded form looks like this,
+
+`%66%6C%61%67%2E%74%78%74`
+
+Putting that into our URL looks like this,
+
+`http://34.87.217.252:30026/two/%66%6C%61%67%2E%74%78%74`
+
+Awesome, now the only catch is that you have to send this request directly to the server. If you try putting it in your browser your browser will decode the text before it sends it. So the correct request in burpsuite looks like this,
+
+![image](https://user-images.githubusercontent.com/104875856/192172690-7bf11fb0-c653-401c-abdc-053aaca2b58a.png)
+
+And we get the second part of our flag!
+
+![image](https://user-images.githubusercontent.com/104875856/192172746-c1cbbf70-3e78-4c76-a135-d2aa7a8d7b85.png)
+
+
+`DUCTF{thats_it_next_time_im_using_nginx}`
+
+
 
 
 

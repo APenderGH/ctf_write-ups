@@ -33,7 +33,7 @@ Now that I had the important `.html` and `.js` files I spent a long time analysi
 
 ![image](https://user-images.githubusercontent.com/104875856/192209919-67b90291-57fd-4648-aef6-a804f22150cc.png)
 
-Notice anything interesting? For me, that directory looked super interesting. As soon as I saw that I thought I might be able to get SSRF (Server-Side Request Forgery). SSRF is where you get the server itself to make a request to whereever you want. My idea was that maybe the server has to follow that directory when it goes to sign our JWT for authentication, if we can change that then maybe we can get it to send a request to somewhere other than `/api/auth/pub-key`.
+Notice anything interesting? For me, that directory looked super interesting. As soon as I saw that I thought I might be able to get SSRF (Server-Side Request Forgery). SSRF is where you get the server itself to make a request to wherever you want. My idea was that maybe the server has to follow that directory when it goes to sign our JWT for authentication, if we can change that then maybe we can get it to send a request to somewhere other than `/api/auth/pub-key`.
 
 To test this I crafted a new JWT, keeping everything else the same but changing the header to this:
 

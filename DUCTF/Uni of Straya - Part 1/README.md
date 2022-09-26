@@ -105,8 +105,59 @@ NO WAY
 
 ![image](https://user-images.githubusercontent.com/104875856/192215883-ad5f5900-69e7-4b26-be1a-5fef57785e68.png)
 
-So we have SSRF, but it's kinda limited right? We don't get any real feedback on what the serv
+So we have SSRF, but it's kinda limited right? We don't get any real feedback on what the server other than that error message. I tried for a while to get that error message to maybe leak some of the content that it retrieved, if we could do that then we might be able to view a response from the api that we aren't authorised to see.
 
+When I determined that wouldn't work I started thinking, if we control where the server goes for a public key then we can route it to our own public key! Now, I don't completely understand how key pair verification works with JWT's RS256 algo, but I'll explain how I think it works from what research I've done.
 
+*at this point it's also important to note that the 'alg' specified in the JWT header was RS256, this involves RSA key pairs*
 
+- First, you need an RSA key pair. First you generate a private key, and from that private key you generate a public key.
+- Then, we sign the JWT token with our Private key.
+- When we want to verify a JWT token, we check it against our public key. Since **anything signed by our private key can only be verified by the corresponding public key**.
 
+This means on the api end, they've created the JWT with their private key and then they look for the public key to verify it against. The issue with this is that **they only check if the private key used to make the JWT corresponds with the public key they find using that directory**.
+
+This means we can make our own JWT, signed with **our own private key** and then point the verification to **our own public key**. The JWT will be valid because it was created and verified against a valid key pair.
+
+Pheew, alright. Now that we've got that, how can we set it up? Well, first we generate an RSA key pair (you can do this using ssh-keygen).
+
+![image](https://user-images.githubusercontent.com/104875856/192242616-1f492dd5-1028-43ea-ab71-ab7d1690df2c.png)
+
+Awesome, now we need make our JWT using the private key. We can do this super easily with https://jwt.io/, and if we plug in our public key as well it'll tell us if the signature is correct.
+
+![image](https://user-images.githubusercontent.com/104875856/192243558-982836a2-2348-4613-837b-d55ddc9cd48a.png)
+
+Great! So it's telling us that the JWT is valid and it'll be authenticated using that key pair. Now, when we send this to the api we don't want to be our current user, we wanna become someone with privileges, so I'm gonna change that `userId` to 1 and hope that the first user has permissions.
+
+![image](https://user-images.githubusercontent.com/104875856/192243976-731e21fb-957f-4046-ae87-f575ddabe23d.png)
+
+There's still one issue though, we need to make sure that the server uses OUR public key to authenticate the JWT token. So first we need to expose our public key file to the internet. I'll do this using a python http server and ngrok.
+
+First, make a python server listen on port 8000.
+
+![image](https://user-images.githubusercontent.com/104875856/192244462-8c689fca-dee3-4994-b7a0-0cf0ce0227b9.png)
+
+Second, start a front facing (front facing means its accessible on the open web) ngrok server pointing to our HTTP python server.
+
+![image](https://user-images.githubusercontent.com/104875856/192244694-46746173-654e-4ae2-9efb-1fcea9070e77.png)
+
+![image](https://user-images.githubusercontent.com/104875856/192244765-e2ade595-d107-4331-9065-6dccc0e4fc00.png)
+
+Awesome, now the url http://0.tcp.au.ngrok.io:19528/jwtRS256.key.pub will serve our public key.
+
+Change our JWT token to point to this address for public key authentication, which looks like this:
+
+![image](https://user-images.githubusercontent.com/104875856/192245367-994d57ce-352b-49c0-83df-575c1acea8ed.png)
+
+Now, let's use this JWT token and try to access `/admin`.
+
+![image](https://user-images.githubusercontent.com/104875856/192245728-a10fbc6f-cf26-4ec0-a14f-bcab9ceaddbf.png)
+
+WOOOOOOOOOOOOOOOOOOOOOOOOOO!! IT WORKED!! HAHAA <- my actual reaction when this worked
+
+We got our flag!!
+`DUCTF{iSs_t0_h0vSt0n_c4n_U_h3r3_uS_oR_r_w3_b31nG_r3dIrEcTeD!1!}`
+
+This was such an awesome challenge, I really think this has been one of the most satisfying flags I've ever gotten. I really gotta give it to `ghostccamm`, the author of this challenge, the vector going from directory traversal to SSRF and finally to a forged JWT token was so awesome and it taught me heaps! This flag alone made DUCTF awesome for me and I can't wait for the next one.
+
+Thanks for reading all of this, I hope it was useful to you in some way!
